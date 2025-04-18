@@ -43,12 +43,6 @@ const Header = ({ username }: HeaderProps) => {
             <Link href="/">
               <span className="text-white hover:text-primary transition-colors">Home</span>
             </Link>
-            <Link href="/?genre=trending">
-              <span className="text-white hover:text-primary transition-colors">Popular</span>
-            </Link>
-            <Link href="/?genre=finance">
-              <span className="text-white hover:text-primary transition-colors">Finance</span>
-            </Link>
             <Link href="/my-list">
               <span className="text-white hover:text-primary transition-colors">My List</span>
             </Link>

@@ -62,76 +62,15 @@ export class MemStorage implements IStorage {
       this.createCategory(category);
     });
     
-    // Create admin user
+    // Create admin user with complex username
     this.createUser({
-      username: "admin",
+      username: "admin_daniwdiawdnawidwandwndwadnwi",
       password: "admin123",
       isAdmin: true
     });
     
-    // Create sample videos
-    const sampleVideos: InsertVideo[] = [
-      {
-        title: "How to Budget When You're Broke",
-        description: "In this video, we break down practical budgeting techniques for when you're living paycheck to paycheck. Learn how to track expenses, prioritize spending, and start building an emergency fund even when money is tight.",
-        thumbnailUrl: "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        duration: 504, // 8:24
-        categoryId: 1, // Trending
-        tags: ["Budget", "SavingMoney", "FinanceTips"],
-        uploadedBy: "admin",
-      },
-      {
-        title: "Side Hustle Ideas for 2023",
-        description: "Discover the best side hustle ideas to make extra income in 2023. These are practical ways to earn money on the side while working your regular job.",
-        thumbnailUrl: "https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-        duration: 771, // 12:51
-        categoryId: 1, // Trending
-        tags: ["SideHustle", "Money", "Business"],
-        uploadedBy: "admin",
-      },
-      {
-        title: "Thrifting Tips: Find Hidden Gems",
-        description: "Learn how to find amazing deals while thrifting. These expert tips will help you discover hidden gems at thrift stores and save a ton of money.",
-        thumbnailUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        duration: 933, // 15:33
-        categoryId: 1, // Trending
-        tags: ["Thrifting", "Shopping", "Savings"],
-        uploadedBy: "admin",
-      },
-      {
-        title: "Easy Ramen Upgrade Ideas",
-        description: "Transform your basic instant ramen into gourmet meals with these simple and affordable upgrades. Perfect for college students and budget-conscious foodies.",
-        thumbnailUrl: "https://images.unsplash.com/photo-1607083206968-13611e3d76db?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-        duration: 434, // 7:14
-        categoryId: 6, // Cooking
-        tags: ["Ramen", "CookingHacks", "BudgetMeals"],
-        uploadedBy: "admin",
-      },
-      {
-        title: "Investing With Just $50",
-        description: "Yes, you can start investing with just $50! Learn about micro-investing apps, fractional shares, and other ways to begin your investment journey with minimal cash.",
-        thumbnailUrl: "https://images.unsplash.com/photo-1593672755342-741a7f868732?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-        duration: 1102, // 18:22
-        categoryId: 5, // Finance
-        tags: ["Investing", "Finance", "Money"],
-        uploadedBy: "admin",
-      },
-      {
-        title: "Pay Off Debt Fast: 5 Methods",
-        description: "Learn five proven strategies to eliminate debt quickly. From the snowball method to debt consolidation, find out which approach works best for your situation.",
-        thumbnailUrl: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-        duration: 845, // 14:05
-        categoryId: 5, // Finance
-        tags: ["DebtFree", "FinanceTips", "Money"],
-        uploadedBy: "admin",
-      }
-    ];
+    // No sample videos - clean start
+    const sampleVideos: InsertVideo[] = [];
     
     sampleVideos.forEach(video => {
       this.createVideo(video);

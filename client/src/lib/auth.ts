@@ -11,7 +11,7 @@ export const setUsernameToStorage = (username: string): void => {
 // Check if the user is an admin (would normally check with server)
 export const checkIfAdmin = (): boolean => {
   const username = getUsernameFromStorage();
-  return username === "admin";
+  return username === "admin_daniwdiawdnawidwandwndwadnwi";
 };
 
 // Add username to request headers
