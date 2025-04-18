@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { type Video } from "@shared/schema";
 import { formatDuration } from "@/lib/video";
-import { isVideoLiked } from "@/lib/auth";
-import { likeVideo, unlikeVideo, queryClient } from "@/lib/queryClient";
-import { Play, Info, ThumbsUp } from "lucide-react";
+import { Play, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
 
 interface VideoCardProps {
   video: Video;
@@ -14,44 +11,11 @@ interface VideoCardProps {
 
 const VideoCard = ({ video }: VideoCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   const [_, navigate] = useLocation();
-  
-  // Like and unlike mutations
-  const likeMutation = useMutation({
-    mutationFn: (id: number) => likeVideo(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/videos"] });
-    }
-  });
-  
-  const unlikeMutation = useMutation({
-    mutationFn: (id: number) => unlikeVideo(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/videos"] });
-    }
-  });
-  
-  // Check if video is liked when component mounts
-  useEffect(() => {
-    setIsLiked(isVideoLiked(video.id));
-  }, [video.id]);
   
   const handlePlayClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigate(`/video/${video.id}`);
-  };
-  
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    
-    if (isLiked) {
-      setIsLiked(false);
-      unlikeMutation.mutate(video.id);
-    } else {
-      setIsLiked(true);
-      likeMutation.mutate(video.id);
-    }
   };
   
   const handleCardClick = () => {
@@ -95,26 +59,8 @@ const VideoCard = ({ video }: VideoCardProps) => {
                 size="sm"
                 variant="secondary"
                 className="rounded-full w-9 h-9 p-0 flex items-center justify-center bg-neutral-800/80 border border-neutral-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/video/${video.id}`);
-                }}
               >
                 <Info size={16} />
-              </Button>
-              
-              <Button
-                size="sm"
-                variant="secondary"
-                className={`rounded-full w-9 h-9 p-0 flex items-center justify-center ${
-                  isLiked 
-                    ? 'bg-primary/20 text-primary border-primary' 
-                    : 'bg-neutral-800/80 border-neutral-600'
-                }`}
-                onClick={handleLikeClick}
-                disabled={likeMutation.isPending || unlikeMutation.isPending}
-              >
-                <ThumbsUp size={16} />
               </Button>
               
               <div className="flex-grow"></div>

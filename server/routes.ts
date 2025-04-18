@@ -21,23 +21,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     next();
   };
-  
-  // Middleware to check if user is authenticated
-  const isAuthenticated = async (req: Request, res: Response, next: Function) => {
-    const username = req.headers["x-username"] as string;
-    
-    if (!username) {
-      return res.status(401).json({ message: "Authentication required" });
-    }
-    
-    const user = await storage.getUserByUsername(username);
-    
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    
-    next();
-  };
 
   // GET all categories
   app.get("/api/categories", async (req, res) => {
@@ -52,14 +35,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET all videos
   app.get("/api/videos", async (req, res) => {
     try {
-      // Check if filtering by type
-      const type = req.query.type as string;
-      
-      if (type) {
-        const videos = await storage.getVideosByType(type);
-        return res.json(videos);
-      }
-      
       const videos = await storage.getVideos();
       res.json(videos);
     } catch (error) {
@@ -157,96 +132,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(201).json(video);
     } catch (error) {
       res.status(500).json({ message: "Error creating video" });
-    }
-  });
-  
-  // POST to like a video
-  app.post("/api/videos/:id/like", isAuthenticated, async (req, res) => {
-    try {
-      const videoId = parseInt(req.params.id);
-      if (isNaN(videoId)) {
-        return res.status(400).json({ message: "Invalid video ID" });
-      }
-      
-      const username = req.headers["x-username"] as string;
-      
-      const success = await storage.likeVideo(username, videoId);
-      if (!success) {
-        return res.status(404).json({ message: "Video or user not found" });
-      }
-      
-      // Get updated video data
-      const video = await storage.getVideoById(videoId);
-      
-      res.json(video);
-    } catch (error) {
-      res.status(500).json({ message: "Error liking video" });
-    }
-  });
-  
-  // POST to unlike a video
-  app.post("/api/videos/:id/unlike", isAuthenticated, async (req, res) => {
-    try {
-      const videoId = parseInt(req.params.id);
-      if (isNaN(videoId)) {
-        return res.status(400).json({ message: "Invalid video ID" });
-      }
-      
-      const username = req.headers["x-username"] as string;
-      
-      const success = await storage.unlikeVideo(username, videoId);
-      if (!success) {
-        return res.status(404).json({ message: "Video or user not found" });
-      }
-      
-      // Get updated video data
-      const video = await storage.getVideoById(videoId);
-      
-      res.json(video);
-    } catch (error) {
-      res.status(500).json({ message: "Error unliking video" });
-    }
-  });
-  
-  // GET user's liked videos
-  app.get("/api/users/me/likes", isAuthenticated, async (req, res) => {
-    try {
-      const username = req.headers["x-username"] as string;
-      
-      const likedIds = await storage.getUserLikedVideos(username);
-      
-      // Fetch the actual video data for each liked video
-      const likedVideos = await Promise.all(
-        likedIds.map(id => storage.getVideoById(id))
-      );
-      
-      // Filter out any undefined values (in case a video was deleted)
-      const validVideos = likedVideos.filter(video => video !== undefined);
-      
-      res.json(validVideos);
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching liked videos" });
-    }
-  });
-  
-  // Set video as featured (admin only)
-  app.post("/api/videos/:id/feature", isAdmin, async (req, res) => {
-    try {
-      const videoId = parseInt(req.params.id);
-      if (isNaN(videoId)) {
-        return res.status(400).json({ message: "Invalid video ID" });
-      }
-      
-      const isFeatured = req.body.isFeatured === true;
-      
-      const video = await storage.updateVideoFeatured(videoId, isFeatured);
-      if (!video) {
-        return res.status(404).json({ message: "Video not found" });
-      }
-      
-      res.json(video);
-    } catch (error) {
-      res.status(500).json({ message: "Error updating featured status" });
     }
   });
 

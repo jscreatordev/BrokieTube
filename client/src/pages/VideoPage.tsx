@@ -1,10 +1,8 @@
-import { useEffect, useState, useRef } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useRoute, useLocation } from "wouter";
 import { type Video } from "@shared/schema";
 import { formatViewCount, formatRelativeDate, getRecommendedVideos } from "@/lib/video";
-import { isVideoLiked } from "@/lib/auth";
-import { likeVideo, unlikeVideo, queryClient } from "@/lib/queryClient";
 import VideoPlayer from "@/components/video/VideoPlayer";
 import CategorySidebar from "@/components/layout/CategorySidebar";
 import MobileCategories from "@/components/layout/MobileCategories";
@@ -12,15 +10,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Plus, ThumbsUp, ThumbsDown, Share2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
 const VideoPage = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isLiked, setIsLiked] = useState(false);
   const [match, params] = useRoute("/video/:id");
   const [_, navigate] = useLocation();
   const videoId = params?.id ? parseInt(params.id) : 0;
-  const { toast } = useToast();
   
   // Fetch video data
   const { data: video, isLoading: isLoadingVideo } = useQuery<Video>({
@@ -31,45 +25,6 @@ const VideoPage = () => {
   // Fetch all videos for recommendations
   const { data: allVideos, isLoading: isLoadingAllVideos } = useQuery<Video[]>({
     queryKey: ["/api/videos"],
-  });
-  
-  // Like and unlike mutations
-  const likeMutation = useMutation({
-    mutationFn: (id: number) => likeVideo(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/videos/${videoId}`] });
-      toast({
-        title: "Video liked!",
-        description: "This video has been added to your liked videos.",
-      });
-    },
-    onError: (error) => {
-      console.error("Error liking video:", error);
-      toast({
-        title: "Could not like video",
-        description: "Please try again later",
-        variant: "destructive"
-      });
-    }
-  });
-  
-  const unlikeMutation = useMutation({
-    mutationFn: (id: number) => unlikeVideo(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/videos/${videoId}`] });
-      toast({
-        title: "Video unliked",
-        description: "This video has been removed from your liked videos."
-      });
-    },
-    onError: (error) => {
-      console.error("Error unliking video:", error);
-      toast({
-        title: "Could not unlike video",
-        description: "Please try again later",
-        variant: "destructive"
-      });
-    }
   });
   
   // Generate recommended videos when both queries are loaded
@@ -90,34 +45,6 @@ const VideoPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [videoId]);
-  
-  // Handle like button click
-  const handleLikeClick = () => {
-    if (!video) return;
-    
-    if (isLiked) {
-      setIsLiked(false);
-      unlikeMutation.mutate(video.id);
-    } else {
-      setIsLiked(true);
-      likeMutation.mutate(video.id);
-    }
-  };
-  
-  // Handle dislike button click
-  const handleDislikeClick = () => {
-    if (!video || !isLiked) return;
-    
-    setIsLiked(false);
-    unlikeMutation.mutate(video.id);
-  };
-  
-  // Check if video is liked when video data changes
-  useEffect(() => {
-    if (video) {
-      setIsLiked(isVideoLiked(video.id));
-    }
-  }, [video]);
   
   // Navigate to a recommended video
   const handleRecommendedClick = (id: number) => {
@@ -156,7 +83,6 @@ const VideoPage = () => {
                 videoUrl={video.videoUrl} 
                 thumbnailUrl={video.thumbnailUrl}
                 title={video.title}
-                videoRef={videoRef}
               />
               
               <div className="p-4 md:p-8 max-w-7xl mx-auto">
@@ -169,22 +95,11 @@ const VideoPage = () => {
                     <span>{formattedDate}</span>
                     <span className="mx-2">•</span>
                     <span>Uploaded by {video.uploadedBy}</span>
-                    {video.likes > 0 && (
-                      <>
-                        <span className="mx-2">•</span>
-                        <span>{video.likes} {video.likes === 1 ? 'like' : 'likes'}</span>
-                      </>
-                    )}
                   </div>
                   
                   <div className="flex flex-wrap gap-3 my-4">
                     <Button 
                       className="bg-white hover:bg-white/90 text-black rounded-md font-medium"
-                      onClick={() => {
-                        if (videoRef.current) {
-                          videoRef.current.play();
-                        }
-                      }}
                     >
                       <Play size={18} className="mr-2" />
                       Play
@@ -200,9 +115,7 @@ const VideoPage = () => {
                     
                     <Button 
                       variant="ghost"
-                      className={`${isLiked ? 'bg-primary/20 text-primary' : 'bg-neutral-900/50'} hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0`}
-                      onClick={handleLikeClick}
-                      disabled={likeMutation.isPending || unlikeMutation.isPending}
+                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
                     >
                       <ThumbsUp size={18} />
                     </Button>
@@ -210,8 +123,6 @@ const VideoPage = () => {
                     <Button 
                       variant="ghost"
                       className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
-                      onClick={handleDislikeClick}
-                      disabled={likeMutation.isPending || unlikeMutation.isPending}
                     >
                       <ThumbsDown size={18} />
                     </Button>

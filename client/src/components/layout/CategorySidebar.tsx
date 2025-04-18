@@ -40,9 +40,7 @@ const CategorySidebar = ({ selectedCategory = "trending" }: CategorySidebarProps
         </div>
       ) : (
         <ul className="space-y-2">
-          {categories?.filter(category => 
-            ["trending", "movies", "tvshows"].includes(category.slug)
-          ).map((category) => (
+          {categories?.map((category) => (
             <li key={category.id}>
               <button
                 onClick={() => handleCategoryClick(category.slug)}
