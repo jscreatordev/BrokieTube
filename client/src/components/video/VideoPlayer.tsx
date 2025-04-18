@@ -15,10 +15,12 @@ interface VideoPlayerProps {
   videoUrl: string;
   thumbnailUrl: string;
   title: string;
+  videoRef?: React.RefObject<HTMLVideoElement>;
 }
 
-const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+const VideoPlayer = ({ videoUrl, thumbnailUrl, title, videoRef: externalVideoRef }: VideoPlayerProps) => {
+  const internalVideoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = externalVideoRef || internalVideoRef;
   const containerRef = useRef<HTMLDivElement>(null);
   
   const [isPlaying, setIsPlaying] = useState(false);

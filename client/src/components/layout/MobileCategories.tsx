@@ -15,8 +15,10 @@ const MobileCategories = ({ selectedCategory = "trending" }: MobileCategoriesPro
     queryKey: ["/api/categories"],
   });
   
-  // Get all categories for scrollable view
-  const visibleCategories = categories || [];
+  // Filter categories to only show trending, movies and TV shows
+  const visibleCategories = categories 
+    ? categories.filter(category => ["trending", "movies", "tvshows"].includes(category.slug))
+    : [];
 
   // Helper function to get the appropriate icon for each category
   const getCategoryIcon = (icon: string) => {
