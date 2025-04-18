@@ -7,6 +7,7 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   isAdmin: boolean("is_admin").default(false).notNull(),
+  likedVideos: integer("liked_videos").array().default([]).notNull(),
 });
 
 export const categories = pgTable("categories", {
@@ -24,10 +25,13 @@ export const videos = pgTable("videos", {
   videoUrl: text("video_url").notNull(),
   duration: integer("duration").notNull(), // in seconds
   views: integer("views").default(0).notNull(),
+  likes: integer("likes").default(0).notNull(),
   uploadedAt: timestamp("uploaded_at").defaultNow().notNull(),
   categoryId: integer("category_id").notNull(),
   tags: text("tags").array().notNull(),
   uploadedBy: text("uploaded_by").notNull(),
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  type: text("type").default("movie").notNull(), // movie or tvshow
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -41,6 +45,7 @@ export const insertCategorySchema = createInsertSchema(categories);
 export const insertVideoSchema = createInsertSchema(videos).omit({
   id: true,
   views: true,
+  likes: true,
   uploadedAt: true,
 });
 
