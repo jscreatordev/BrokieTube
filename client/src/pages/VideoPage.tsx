@@ -4,12 +4,11 @@ import { useRoute, useLocation } from "wouter";
 import { type Video } from "@shared/schema";
 import { formatViewCount, formatRelativeDate, getRecommendedVideos } from "@/lib/video";
 import VideoPlayer from "@/components/video/VideoPlayer";
-import CategorySidebar from "@/components/layout/CategorySidebar";
-import MobileCategories from "@/components/layout/MobileCategories";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Plus, ThumbsUp, ThumbsDown, Share2 } from "lucide-react";
+import { Play, Plus } from "lucide-react";
 
 const VideoPage = () => {
   const [match, params] = useRoute("/video/:id");
@@ -53,11 +52,8 @@ const VideoPage = () => {
   
   return (
     <div className="flex flex-1">
-      {/* Category Sidebar */}
-      <CategorySidebar />
-      
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full">
         {/* Video Player Page */}
         <div id="video-page" className="bg-black">
           {isLoadingVideo ? (
@@ -111,27 +107,6 @@ const VideoPage = () => {
                     >
                       <Plus size={18} className="mr-2" />
                       My List
-                    </Button>
-                    
-                    <Button 
-                      variant="ghost"
-                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
-                    >
-                      <ThumbsUp size={18} />
-                    </Button>
-                    
-                    <Button 
-                      variant="ghost"
-                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
-                    >
-                      <ThumbsDown size={18} />
-                    </Button>
-                    
-                    <Button 
-                      variant="ghost"
-                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
-                    >
-                      <Share2 size={18} />
                     </Button>
                   </div>
                   
@@ -192,9 +167,6 @@ const VideoPage = () => {
           )}
         </div>
       </main>
-      
-      {/* Mobile Categories */}
-      <MobileCategories />
     </div>
   );
 };

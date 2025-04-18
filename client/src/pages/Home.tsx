@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { type Video, type Category } from "@shared/schema";
-import CategorySidebar from "@/components/layout/CategorySidebar";
-import MobileCategories from "@/components/layout/MobileCategories";
+
 import VideoCard from "@/components/video/VideoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -114,12 +113,9 @@ const Home = () => {
   };
   
   return (
-    <div className="flex flex-1">
-      {/* Category Sidebar */}
-      <CategorySidebar selectedCategory={selectedCategory} />
-      
+    <div className="flex flex-1">      
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full">
         <div id="home-page" className="pb-16">
           {searchQuery || selectedCategory !== "trending" ? (
             // Search results or Category page
@@ -228,9 +224,6 @@ const Home = () => {
           )}
         </div>
       </main>
-      
-      {/* Mobile Categories */}
-      <MobileCategories selectedCategory={selectedCategory} />
     </div>
   );
 };
