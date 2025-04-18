@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { type Category } from "@shared/schema";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,67 +9,52 @@ interface MobileCategoriesProps {
 }
 
 const MobileCategories = ({ selectedCategory = "trending" }: MobileCategoriesProps) => {
+  const [_, navigate] = useLocation();
+  
   const { data: categories, isLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
   
-  // Get only the first 4 categories for mobile view (plus "More" option)
-  const visibleCategories = categories?.slice(0, 4);
+  // Get all categories for scrollable view
+  const visibleCategories = categories || [];
 
   // Helper function to get the appropriate icon for each category
   const getCategoryIcon = (icon: string) => {
     return <i className={`fas fa-${icon} text-lg mb-1`}></i>;
   };
+  
+  const handleCategoryClick = (slug: string) => {
+    if (slug === "trending") {
+      navigate("/");
+    } else {
+      navigate(`/?genre=${slug}`);
+    }
+  };
 
   return (
-    <div className="lg:hidden bg-[#1A1A1A] sticky bottom-0 z-10 pt-2 pb-1 px-2 border-t border-gray-800">
+    <div className="lg:hidden bg-black/90 sticky bottom-0 z-10 py-2 border-t border-neutral-800">
       {isLoading ? (
-        <div className="flex justify-between items-center overflow-x-auto pb-1 space-x-1">
+        <div className="flex overflow-x-auto pb-1 space-x-2 px-2">
           {Array(5).fill(0).map((_, i) => (
-            <Skeleton key={i} className="min-w-[80px] h-14 bg-[#242424]" />
+            <Skeleton key={i} className="min-w-[100px] h-10 bg-neutral-800 flex-shrink-0" />
           ))}
         </div>
       ) : (
-        <div className="flex justify-between items-center overflow-x-auto pb-1 space-x-1">
-          {/* Trending category */}
-          <Link href="/">
-            <a 
+        <div className="flex overflow-x-auto pb-1 space-x-3 px-3">
+          {visibleCategories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => handleCategoryClick(category.slug)}
               className={cn(
-                "flex flex-col items-center min-w-[80px] px-2 py-1 rounded text-xs",
-                selectedCategory === "trending" 
-                  ? "text-[#FF4500]" 
-                  : "text-white hover:bg-[#242424]"
+                "flex-shrink-0 min-w-[100px] px-4 py-2 rounded-full text-sm text-center",
+                selectedCategory === category.slug 
+                  ? "bg-primary text-white" 
+                  : "bg-neutral-800 text-white hover:bg-neutral-700 transition-colors"
               )}
             >
-              {getCategoryIcon("fire")}
-              <span>Trending</span>
-            </a>
-          </Link>
-          
-          {/* Other categories */}
-          {visibleCategories?.filter(cat => cat.slug !== "trending").map((category) => (
-            <Link key={category.id} href={`/?category=${category.slug}`}>
-              <a 
-                className={cn(
-                  "flex flex-col items-center min-w-[80px] px-2 py-1 rounded text-xs",
-                  selectedCategory === category.slug 
-                    ? "text-[#FF4500]" 
-                    : "text-white hover:bg-[#242424]"
-                )}
-              >
-                {getCategoryIcon(category.icon)}
-                <span>{category.name}</span>
-              </a>
-            </Link>
+              {category.name}
+            </button>
           ))}
-          
-          {/* More option */}
-          <Link href="/?showAllCategories=true">
-            <a className="flex flex-col items-center min-w-[80px] px-2 py-1 rounded text-white text-xs hover:bg-[#242424]">
-              <i className="fas fa-ellipsis-h text-lg mb-1"></i>
-              <span>More</span>
-            </a>
-          </Link>
         </div>
       )}
     </div>

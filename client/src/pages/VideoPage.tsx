@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRoute } from "wouter";
+import { useRoute, useLocation } from "wouter";
 import { type Video } from "@shared/schema";
 import { formatViewCount, formatRelativeDate, getRecommendedVideos } from "@/lib/video";
 import VideoPlayer from "@/components/video/VideoPlayer";
@@ -8,10 +8,12 @@ import CategorySidebar from "@/components/layout/CategorySidebar";
 import MobileCategories from "@/components/layout/MobileCategories";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { apiRequest } from "@/lib/queryClient";
+import { Button } from "@/components/ui/button";
+import { Play, Plus, ThumbsUp, ThumbsDown, Share2 } from "lucide-react";
 
 const VideoPage = () => {
   const [match, params] = useRoute("/video/:id");
+  const [_, navigate] = useLocation();
   const videoId = params?.id ? parseInt(params.id) : 0;
   
   // Fetch video data
@@ -44,44 +46,35 @@ const VideoPage = () => {
     window.scrollTo(0, 0);
   }, [videoId]);
   
+  // Navigate to a recommended video
+  const handleRecommendedClick = (id: number) => {
+    navigate(`/video/${id}`);
+  };
+  
   return (
     <div className="flex flex-1">
       {/* Category Sidebar */}
       <CategorySidebar />
       
       {/* Main Content */}
-      <main className="flex-1 p-4 md:p-6">
+      <main className="flex-1">
         {/* Video Player Page */}
-        <div id="video-page">
+        <div id="video-page" className="bg-black">
           {isLoadingVideo ? (
             <>
-              <Skeleton className="aspect-video w-full mb-4 bg-[#1A1A1A]" />
-              <div className="md:flex space-y-4 md:space-y-0 md:space-x-6">
-                <div className="md:w-2/3">
-                  <Skeleton className="h-8 w-3/4 mb-2 bg-[#242424]" />
-                  <Skeleton className="h-4 w-1/3 mb-4 bg-[#242424]" />
-                  <Skeleton className="h-32 w-full rounded-lg bg-[#242424]" />
+              <Skeleton className="aspect-video w-full mb-0 bg-neutral-900" />
+              <div className="p-4 md:p-8 space-y-6">
+                <Skeleton className="h-10 w-3/4 bg-neutral-800" />
+                <div className="flex space-x-3">
+                  <Skeleton className="h-10 w-32 rounded-md bg-neutral-800" />
+                  <Skeleton className="h-10 w-32 rounded-md bg-neutral-800" />
                 </div>
-                <div className="md:w-1/3">
-                  <Skeleton className="h-6 w-48 mb-3 bg-[#242424]" />
-                  <div className="space-y-3">
-                    {Array(3).fill(0).map((_, i) => (
-                      <div key={i} className="flex space-x-2">
-                        <Skeleton className="h-16 w-28 bg-[#242424]" />
-                        <div className="flex-1">
-                          <Skeleton className="h-4 w-full mb-1 bg-[#242424]" />
-                          <Skeleton className="h-3 w-24 mb-1 bg-[#242424]" />
-                          <Skeleton className="h-3 w-16 bg-[#242424]" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <Skeleton className="h-24 w-full rounded-md bg-neutral-800" />
               </div>
             </>
           ) : !video ? (
-            <div className="text-center py-8">
-              <p className="text-[#B3B3B3]">Video not found</p>
+            <div className="text-center py-24">
+              <p className="text-neutral-400">Video not found</p>
             </div>
           ) : (
             <>
@@ -92,71 +85,107 @@ const VideoPage = () => {
                 title={video.title}
               />
               
-              <div className="md:flex space-y-4 md:space-y-0 md:space-x-6">
-                <div className="md:w-2/3">
-                  <h1 className="text-2xl font-semibold mb-2">{video.title}</h1>
-                  <div className="flex items-center text-[#B3B3B3] text-sm mb-4">
+              <div className="p-4 md:p-8 max-w-7xl mx-auto">
+                <div className="mb-8">
+                  <h1 className="text-2xl md:text-3xl font-bold mb-2">{video.title}</h1>
+                  
+                  <div className="flex flex-wrap items-center text-neutral-400 text-sm mb-4">
                     <span>{formatViewCount(video.views)} views</span>
                     <span className="mx-2">•</span>
                     <span>{formattedDate}</span>
+                    <span className="mx-2">•</span>
+                    <span>Uploaded by {video.uploadedBy}</span>
                   </div>
-                  <div className="p-4 bg-[#242424] rounded-lg mb-6">
-                    <h3 className="font-medium mb-2">Description</h3>
-                    <p className="text-[#B3B3B3] text-sm">
+                  
+                  <div className="flex flex-wrap gap-3 my-4">
+                    <Button 
+                      className="bg-white hover:bg-white/90 text-black rounded-md font-medium"
+                    >
+                      <Play size={18} className="mr-2" />
+                      Play
+                    </Button>
+                    
+                    <Button 
+                      variant="outline"
+                      className="bg-neutral-800 border-neutral-600 hover:bg-neutral-700 rounded-md"
+                    >
+                      <Plus size={18} className="mr-2" />
+                      My List
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost"
+                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
+                    >
+                      <ThumbsUp size={18} />
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost"
+                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
+                    >
+                      <ThumbsDown size={18} />
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost"
+                      className="bg-neutral-900/50 hover:bg-neutral-800/50 rounded-full h-10 w-10 p-0"
+                    >
+                      <Share2 size={18} />
+                    </Button>
+                  </div>
+                  
+                  <div className="bg-neutral-900/50 p-4 rounded-md">
+                    <p className="text-neutral-200 mb-4">
                       {video.description}
                     </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mt-4">
                       {video.tags.map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="bg-[#1A1A1A] hover:bg-[#242424]">
-                          #{tag}
+                        <Badge key={index} className="genre-pill">
+                          {tag}
                         </Badge>
                       ))}
                     </div>
                   </div>
                 </div>
                 
-                <div className="md:w-1/3">
-                  <h3 className="font-medium mb-3">Recommended Videos</h3>
-                  <div className="space-y-3">
-                    {isLoadingAllVideos ? (
-                      Array(3).fill(0).map((_, i) => (
-                        <div key={i} className="flex space-x-2">
-                          <Skeleton className="h-16 w-28 bg-[#242424]" />
-                          <div className="flex-1">
-                            <Skeleton className="h-4 w-full mb-1 bg-[#242424]" />
-                            <Skeleton className="h-3 w-24 mb-1 bg-[#242424]" />
-                            <Skeleton className="h-3 w-16 bg-[#242424]" />
-                          </div>
+                {/* More like this */}
+                <div className="mt-12 mb-16">
+                  <h2 className="section-title mb-6">More Like This</h2>
+                  
+                  {isLoadingAllVideos ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                      {Array(5).fill(0).map((_, i) => (
+                        <div key={i} className="aspect-video rounded overflow-hidden">
+                          <Skeleton className="w-full h-full bg-neutral-800" />
                         </div>
-                      ))
-                    ) : recommendedVideos.length === 0 ? (
-                      <p className="text-[#B3B3B3] text-sm">No recommendations available</p>
-                    ) : (
-                      recommendedVideos.map((recVideo) => (
-                        <a 
-                          key={recVideo.id} 
-                          href={`/video/${recVideo.id}`}
-                          className="flex space-x-2 cursor-pointer hover:bg-[#242424] p-1 rounded"
+                      ))}
+                    </div>
+                  ) : recommendedVideos.length === 0 ? (
+                    <p className="text-neutral-400">No recommendations available</p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                      {recommendedVideos.map((recVideo) => (
+                        <div 
+                          key={recVideo.id}
+                          className="netflix-card cursor-pointer" 
+                          onClick={() => handleRecommendedClick(recVideo.id)}
                         >
-                          <div className="relative w-28 h-16">
+                          <div className="relative aspect-video rounded overflow-hidden">
                             <img 
                               src={recVideo.thumbnailUrl} 
                               alt={recVideo.title} 
-                              className="rounded object-cover w-full h-full"
+                              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                             />
-                            <div className="absolute bottom-1 right-1 bg-black bg-opacity-70 text-white text-xs px-1 rounded">
-                              {Math.floor(recVideo.duration / 60)}:{(recVideo.duration % 60).toString().padStart(2, '0')}
+                            <div className="card-overlay"></div>
+                            <div className="absolute bottom-0 left-0 p-2">
+                              <h4 className="text-sm font-medium line-clamp-1">{recVideo.title}</h4>
                             </div>
                           </div>
-                          <div className="flex-1">
-                            <h4 className="text-sm font-medium line-clamp-2">{recVideo.title}</h4>
-                            <p className="text-[#B3B3B3] text-xs mt-1">{recVideo.uploadedBy}</p>
-                            <p className="text-[#B3B3B3] text-xs">{formatViewCount(recVideo.views)} views</p>
-                          </div>
-                        </a>
-                      ))
-                    )}
-                  </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </>

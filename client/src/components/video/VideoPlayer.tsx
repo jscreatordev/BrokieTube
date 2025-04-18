@@ -192,7 +192,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
   return (
     <div 
       ref={containerRef}
-      className="video-container relative mb-4 bg-black rounded-lg overflow-hidden"
+      className="video-container relative mb-4 bg-black overflow-hidden"
       onClick={(e) => {
         // Only toggle play if not clicking on a control
         if (e.target === containerRef.current || e.target === videoRef.current) {
@@ -211,7 +211,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
       </video>
       
       <div 
-        className={`video-controls absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 transition-opacity duration-300 ${controlsVisible ? 'opacity-100' : 'opacity-0'}`}
+        className={`video-controls absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 transition-opacity duration-300 ${controlsVisible ? 'opacity-100' : 'opacity-0'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-2">
@@ -222,7 +222,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
               max={100}
               step={0.01}
               onValueChange={handleProgressChange}
-              className="h-1"
+              className="h-1.5"
             />
           </div>
         </div>
@@ -232,17 +232,17 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:text-[#FF4500] hover:bg-transparent"
+              className="text-white hover:text-primary hover:bg-transparent"
               onClick={togglePlay}
             >
-              {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </Button>
             
             <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:text-[#FF4500] hover:bg-transparent"
+                className="text-white hover:text-primary hover:bg-transparent"
                 onClick={toggleMute}
               >
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
@@ -254,11 +254,11 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
                 max={100}
                 step={1}
                 onValueChange={handleVolumeChange}
-                className="w-16 h-1"
+                className="w-20 h-1.5"
               />
             </div>
             
-            <span className="text-white text-sm">
+            <span className="text-white/80 text-sm">
               {formatDuration(currentTime)} / {formatDuration(duration)}
             </span>
           </div>
@@ -267,7 +267,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
             <div className="relative">
               <Button
                 variant="ghost"
-                className="text-white hover:text-[#FF4500] hover:bg-transparent flex items-center h-8 px-2"
+                className="text-white hover:text-primary hover:bg-transparent flex items-center h-8 px-2"
                 onClick={() => setShowSpeedOptions(!showSpeedOptions)}
               >
                 <span className="text-sm mr-1">{playbackSpeed}x</span>
@@ -275,13 +275,13 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
               </Button>
               
               {showSpeedOptions && (
-                <div className="absolute bottom-full right-0 mb-2 bg-[#242424] rounded shadow-lg p-2 w-28 z-10">
+                <div className="absolute bottom-full right-0 mb-2 bg-neutral-900/90 rounded shadow-lg p-2 w-28 z-10">
                   <div className="space-y-1 text-sm">
                     {speedOptions.map((speed) => (
                       <button
                         key={speed}
-                        className={`block w-full text-left px-2 py-1 hover:bg-gray-700 rounded ${
-                          playbackSpeed === speed ? 'bg-[#FF4500] bg-opacity-20' : ''
+                        className={`block w-full text-left px-2 py-1 hover:bg-neutral-800 rounded ${
+                          playbackSpeed === speed ? 'bg-primary/20 text-primary' : ''
                         }`}
                         onClick={() => handleSpeedChange(speed)}
                       >
@@ -296,7 +296,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl, title }: VideoPlayerProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:text-[#FF4500] hover:bg-transparent"
+              className="text-white hover:text-primary hover:bg-transparent"
               onClick={toggleFullscreen}
             >
               <Maximize size={20} />

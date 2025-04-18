@@ -1,41 +1,78 @@
-import { Link } from "wouter";
+import { useState } from "react";
+import { useLocation } from "wouter";
 import { type Video } from "@shared/schema";
-import { formatDuration, formatViewCount, formatRelativeDate } from "@/lib/video";
+import { formatDuration } from "@/lib/video";
+import { Play, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface VideoCardProps {
   video: Video;
 }
 
 const VideoCard = ({ video }: VideoCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [_, navigate] = useLocation();
+  
+  const handlePlayClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/video/${video.id}`);
+  };
+  
+  const handleCardClick = () => {
+    navigate(`/video/${video.id}`);
+  };
+
   return (
-    <Link href={`/video/${video.id}`}>
-      <div className="video-card bg-[#242424] rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-transform duration-200 hover:scale-103">
-        <div className="relative aspect-w-16 aspect-h-9">
-          <img 
-            src={video.thumbnailUrl} 
-            alt={video.title} 
-            className="object-cover w-full h-full"
-            loading="lazy"
-          />
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">
-            {formatDuration(video.duration)}
-          </div>
-        </div>
-        <div className="p-3">
-          <h3 className="font-medium text-md mb-1 line-clamp-2 text-white">
+    <div 
+      className="netflix-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
+    >
+      <div className="relative aspect-[16/9] overflow-hidden">
+        <img 
+          src={video.thumbnailUrl} 
+          alt={video.title} 
+          className="object-cover w-full h-full transition-transform duration-700"
+          style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
+          loading="lazy"
+        />
+        
+        <div className="card-overlay"></div>
+        
+        <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
+          <h3 className="font-medium text-sm md:text-md mb-1 text-white">
             {video.title}
           </h3>
-          <p className="text-[#B3B3B3] text-sm mb-1">
-            {video.uploadedBy}
-          </p>
-          <div className="flex items-center text-[#B3B3B3] text-xs">
-            <span>{formatViewCount(video.views)} views</span>
-            <span className="mx-1">•</span>
-            <span>{formatRelativeDate(new Date(video.uploadedAt))}</span>
-          </div>
+          
+          {isHovered && (
+            <div className="flex items-center space-x-2 mt-2">
+              <Button 
+                size="sm"
+                className="bg-white text-black hover:bg-white/90 rounded-full w-9 h-9 p-0 flex items-center justify-center"
+                onClick={handlePlayClick}
+              >
+                <Play size={18} className="ml-0.5" />
+              </Button>
+              
+              <Button
+                size="sm"
+                variant="secondary"
+                className="rounded-full w-9 h-9 p-0 flex items-center justify-center bg-neutral-800/80 border border-neutral-600"
+              >
+                <Info size={16} />
+              </Button>
+              
+              <div className="flex-grow"></div>
+              
+              <span className="text-xs text-white bg-neutral-900/60 px-1 py-0.5 rounded">
+                {formatDuration(video.duration)}
+              </span>
+            </div>
+          )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
