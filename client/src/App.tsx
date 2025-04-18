@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import VideoPage from "@/pages/VideoPage";
+import AdminPage from "@/pages/AdminPage";
 import UsernameModal from "@/components/modals/UsernameModal";
 import Header from "@/components/layout/Header";
 import { getUsernameFromStorage } from "./lib/auth";
@@ -16,6 +17,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/video/:id" component={VideoPage} />
+      <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />
     </Switch>
   );
