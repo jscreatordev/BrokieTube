@@ -86,17 +86,20 @@ const AdminPage = () => {
   // Create mutation for adding a video
   const addVideoMutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      // Convert form values to match the API expectations
+      // Convert form values to match the API expectations and add tags as array
       const videoData = {
         ...values,
-        uploadedAt: new Date().toISOString(),
+        tags: values.tags.split(',').map(tag => tag.trim()),
+      };
+      
+      const headers = {
+        ...getUserHeaders(),
+        "Content-Type": "application/json",
       };
       
       return await apiRequest("/api/videos", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify(videoData),
       });
     },

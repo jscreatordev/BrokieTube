@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Bell, ChevronDown } from "lucide-react";
+import { Search, Bell, ChevronDown, VideoIcon } from "lucide-react";
+import { checkIfAdmin } from "@/lib/auth";
 
 interface HeaderProps {
   username: string | null;
 }
 
 const Header = ({ username }: HeaderProps) => {
+  const isAdmin = checkIfAdmin();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchVisible, setSearchVisible] = useState(false);
   const [, navigate] = useLocation();
@@ -64,6 +66,20 @@ const Header = ({ username }: HeaderProps) => {
           >
             <Search size={20} />
           </Button>
+          
+          {/* Admin Button - only visible for admin users */}
+          {isAdmin && (
+            <Link href="/admin">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:text-primary hover:bg-transparent"
+                title="Admin Dashboard"
+              >
+                <VideoIcon size={20} />
+              </Button>
+            </Link>
+          )}
           
           {/* Notifications */}
           <Button
