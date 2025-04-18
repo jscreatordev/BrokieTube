@@ -134,6 +134,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Error creating video" });
     }
   });
+  
+  // DELETE video by ID (admin only)
+  app.delete("/api/videos/:id", isAdmin, async (req, res) => {
+    try {
+      const videoId = parseInt(req.params.id);
+      if (isNaN(videoId)) {
+        return res.status(400).json({ message: "Invalid video ID" });
+      }
+      
+      const success = await storage.deleteVideo(videoId);
+      if (!success) {
+        return res.status(404).json({ message: "Video not found" });
+      }
+      
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ message: "Error deleting video" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

@@ -22,6 +22,7 @@ export interface IStorage {
   getVideosBySearch(searchTerm: string): Promise<Video[]>;
   getVideoById(id: number): Promise<Video | undefined>;
   createVideo(video: InsertVideo): Promise<Video>;
+  deleteVideo(id: number): Promise<boolean>;
   updateVideoViews(id: number): Promise<Video | undefined>;
 }
 
@@ -159,6 +160,13 @@ export class MemStorage implements IStorage {
     return video;
   }
   
+  async deleteVideo(id: number): Promise<boolean> {
+    if (this.videos.has(id)) {
+      return this.videos.delete(id);
+    }
+    return false;
+  }
+
   async updateVideoViews(id: number): Promise<Video | undefined> {
     const video = this.videos.get(id);
     if (video) {
