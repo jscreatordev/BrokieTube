@@ -28,14 +28,18 @@ function Router() {
 
 function App() {
   const [username, setUsername] = useState<string | null>(null);
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [location] = useLocation();
 
+  // Check if username exists in localStorage on mount
   useEffect(() => {
-    // Redirect to login if no user
-    if (!username && location !== '/login') {
-      navigate('/login');
+    const storedUsername = getUsernameFromStorage();
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      setShowUsernameModal(true);
     }
-  }, [username, location]);
+  }, []);
 
   // Prevent right-click and keyboard shortcuts for dev tools
   useEffect(() => {
@@ -63,6 +67,12 @@ function App() {
     };
   }, []);
 
+  const handleUsernameSubmit = (username: string) => {
+    setUsername(username);
+    setShowUsernameModal(false);
+    localStorage.setItem("username", username);
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -70,6 +80,9 @@ function App() {
           <Header username={username} />
           <Router />
           <Toaster />
+          {showUsernameModal && (
+            <UsernameModal onSubmit={handleUsernameSubmit} />
+          )}
         </div>
       </TooltipProvider>
     </QueryClientProvider>

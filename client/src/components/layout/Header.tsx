@@ -6,7 +6,7 @@ import { Search, Bell, ChevronDown, VideoIcon } from "lucide-react";
 import { checkIfAdmin } from "@/lib/auth";
 
 interface HeaderProps {
-  username: { picture?: string; name?: string } | null;
+  username: string | null;
 }
 
 const Header = ({ username }: HeaderProps) => {
@@ -84,17 +84,15 @@ const Header = ({ username }: HeaderProps) => {
           {/* User Profile */}
           <div className="flex items-center">
             <span className="text-white mr-2 hidden md:block">
-              {username?.name || "Guest"}
+              {username || "Guest"}
             </span>
             <Button 
               variant="ghost" 
               className="text-white hover:text-primary hover:bg-transparent p-0"
             >
-              <img 
-              src={username?.picture || `https://ui-avatars.com/api/?name=${username?.name || 'G'}`}
-              alt="Profile"
-              className="w-8 h-8 rounded-md object-cover"
-            />
+              <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white font-medium">
+                {username ? username.charAt(0).toUpperCase() : "G"}
+              </div>
               <ChevronDown size={14} className="ml-1" />
             </Button>
           </div>
