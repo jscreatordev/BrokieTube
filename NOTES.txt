@@ -1,0 +1,26 @@
+
+BrokieTube Notes
+===============
+
+Features:
+- Video streaming platform
+- Category-based navigation
+- Video upload capability
+- User authentication
+- Responsive design
+
+Default Categories:
+1. Trending
+2. Movies
+3. Music
+4. Gaming
+5. Education
+6. Cooking
+7. Fitness
+8. Programming
+
+Todo:
+- Add more default videos
+- Implement video comments
+- Add user profiles
+- Add video likes/dislikes

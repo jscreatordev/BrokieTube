@@ -70,8 +70,36 @@ export class MemStorage implements IStorage {
       isAdmin: true
     });
     
-    // No sample videos - clean start
-    const sampleVideos: InsertVideo[] = [];
+    // Default videos list
+    const sampleVideos: InsertVideo[] = [
+      {
+        title: "Introduction to Programming",
+        description: "Learn the basics of programming",
+        categoryId: 8, // Programming category
+        duration: 1200,
+        thumbnailUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+        videoUrl: "https://example.com/video1.mp4",
+        tags: ["programming", "beginner"]
+      },
+      {
+        title: "Workout Routine",
+        description: "30-minute full body workout",
+        categoryId: 7, // Fitness category
+        duration: 1800,
+        thumbnailUrl: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
+        videoUrl: "https://example.com/video2.mp4",
+        tags: ["fitness", "workout"]
+      },
+      {
+        title: "Easy Pasta Recipe",
+        description: "Learn to make delicious pasta",
+        categoryId: 6, // Cooking category
+        duration: 900,
+        thumbnailUrl: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9",
+        videoUrl: "https://example.com/video3.mp4",
+        tags: ["cooking", "recipe"]
+      }
+    ];
     
     sampleVideos.forEach(video => {
       this.createVideo(video);
