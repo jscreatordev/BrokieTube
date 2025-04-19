@@ -43,10 +43,7 @@ const VideoPage = () => {
   // Scroll to top when videoId changes
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (video) {
-      addToRecentlyWatched(video.id);
-    }
-  }, [videoId, video]);
+  }, [videoId]);
   
   // Navigate to a recommended video
   const handleRecommendedClick = (id: number) => {
