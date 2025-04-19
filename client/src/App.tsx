@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import VideoPage from "@/pages/VideoPage";
 import AdminPage from "@/pages/AdminPage";
+import MyList from "@/pages/MyList";
 import UsernameModal from "@/components/modals/UsernameModal";
 import Header from "@/components/layout/Header";
 import { getUsernameFromStorage } from "./lib/auth";
