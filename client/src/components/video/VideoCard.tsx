@@ -79,19 +79,20 @@ const VideoCard = ({ video }: VideoCardProps) => {
                 <Info size={16} />
               </Button>
 
+              <Button
+                size="sm"
+                variant={saved ? "destructive" : "default"}
+                className="ml-2"
+                onClick={handleSave}
+              >
+                {saved ? 'Remove from List' : 'Add to List'}
+              </Button>
+
               <div className="flex-grow"></div>
 
               <span className="text-xs text-white bg-neutral-900/60 px-1 py-0.5 rounded">
                 {formatDuration(video.duration)}
               </span>
-              <button
-                onClick={handleSave}
-                className={`ml-2 mt-2 px-3 py-1 rounded text-sm ${
-                  saved ? 'bg-red-500' : 'bg-blue-500'
-                }`}
-              >
-                {saved ? 'Remove from List' : 'Add to List'}
-              </button>
             </div>
           )}
         </div>

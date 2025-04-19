@@ -44,3 +44,15 @@ export const isInMyList = (videoId: number): boolean => {
   const list = getMyList();
   return list.includes(videoId);
 };
+
+// Recently watched management
+export const getRecentlyWatched = (): number[] => {
+  const watched = localStorage.getItem("recentlyWatched");
+  return watched ? JSON.parse(watched) : [];
+};
+
+export const addToRecentlyWatched = (videoId: number) => {
+  let watched = getRecentlyWatched();
+  watched = [videoId, ...watched.filter(id => id !== videoId)].slice(0, 10);
+  localStorage.setItem("recentlyWatched", JSON.stringify(watched));
+};

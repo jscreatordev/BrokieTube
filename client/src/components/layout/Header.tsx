@@ -93,7 +93,6 @@ const Header = ({ username }: HeaderProps) => {
               <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white font-medium">
                 {username ? username.charAt(0).toUpperCase() : "G"}
               </div>
-              <ChevronDown size={14} className="ml-1" />
             </Button>
           </div>
         </div>
