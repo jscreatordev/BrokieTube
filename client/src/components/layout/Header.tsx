@@ -37,18 +37,15 @@ const Header = ({ username }: HeaderProps) => {
               BROKIE<span className="text-white">FLIX</span>
             </span>
           </Link>
-          
+
           {/* Navigation Links - Desktop Only */}
           <nav className="hidden md:flex ml-8 space-x-6">
             <Link href="/">
               <span className="text-white hover:text-primary transition-colors">Home</span>
             </Link>
-            <Link href="/my-list">
-              <span className="text-white hover:text-primary transition-colors">My List</span>
-            </Link>
           </nav>
         </div>
-        
+
         {/* Right side controls */}
         <div className="flex items-center space-x-4">
           {/* Search Button - toggles search input */}
@@ -60,7 +57,7 @@ const Header = ({ username }: HeaderProps) => {
           >
             <Search size={20} />
           </Button>
-          
+
           {/* Admin Button - only visible for admin users */}
           {isAdmin && (
             <Link href="/admin">
@@ -74,7 +71,7 @@ const Header = ({ username }: HeaderProps) => {
               </Button>
             </Link>
           )}
-          
+
           {/* Notifications */}
           <Button
             variant="ghost"
@@ -83,7 +80,7 @@ const Header = ({ username }: HeaderProps) => {
           >
             <Bell size={20} />
           </Button>
-          
+
           {/* User Profile */}
           <div className="flex items-center">
             <span className="text-white mr-2 hidden md:block">
@@ -101,7 +98,7 @@ const Header = ({ username }: HeaderProps) => {
           </div>
         </div>
       </div>
-      
+
       {/* Search overlay */}
       {searchVisible && (
         <div className="absolute top-full left-0 right-0 bg-black/90 p-4 shadow-lg transition-all duration-300">

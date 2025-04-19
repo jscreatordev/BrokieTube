@@ -28,6 +28,7 @@ export const videos = pgTable("videos", {
   categoryId: integer("category_id").notNull(),
   tags: text("tags").array().notNull(),
   uploadedBy: text("uploaded_by").notNull(),
+  isPopular: boolean("is_popular").default(false).notNull(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
