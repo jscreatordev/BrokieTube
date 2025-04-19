@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import VideoPage from "@/pages/VideoPage";
 import AdminPage from "@/pages/AdminPage";
+import LoginPage from "@/pages/LoginPage";
 
 import UsernameModal from "@/components/modals/UsernameModal";
 import Header from "@/components/layout/Header";
@@ -18,6 +19,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/video/:id" component={VideoPage} />
+      <Route path="/login" component={LoginPage} />
       <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />
     </Switch>
