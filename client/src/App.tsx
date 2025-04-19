@@ -63,12 +63,6 @@ function App() {
     };
   }, []);
 
-  const handleUsernameSubmit = (username: string) => {
-    setUsername(username);
-    setShowUsernameModal(false);
-    localStorage.setItem("username", username);
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -76,9 +70,6 @@ function App() {
           <Header username={username} />
           <Router />
           <Toaster />
-          {showUsernameModal && (
-            <UsernameModal onSubmit={handleUsernameSubmit} />
-          )}
         </div>
       </TooltipProvider>
     </QueryClientProvider>
