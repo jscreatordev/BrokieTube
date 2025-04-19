@@ -28,18 +28,14 @@ function Router() {
 
 function App() {
   const [username, setUsername] = useState<string | null>(null);
-  const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [location] = useLocation();
 
-  // Check if username exists in localStorage on mount
   useEffect(() => {
-    const storedUsername = getUsernameFromStorage();
-    if (storedUsername) {
-      setUsername(storedUsername);
-    } else {
-      setShowUsernameModal(true);
+    // Redirect to login if no user
+    if (!username && location !== '/login') {
+      navigate('/login');
     }
-  }, []);
+  }, [username, location]);
 
   // Prevent right-click and keyboard shortcuts for dev tools
   useEffect(() => {

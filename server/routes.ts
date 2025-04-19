@@ -13,8 +13,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
-    function(req, res) {
-      res.redirect('/');
+    function(req: any, res) {
+      // Save user info to localStorage
+      const userData = {
+        username: req.user.displayName,
+        picture: req.user.photos?.[0]?.value,
+        email: req.user.emails?.[0]?.value
+      };
+      res.redirect(`/?user=${encodeURIComponent(JSON.stringify(userData))}`);
     }
   );
   // Middleware to check if user is admin
