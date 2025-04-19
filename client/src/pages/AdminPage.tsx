@@ -55,6 +55,7 @@ import {
   Calendar,
   Tag
 } from "lucide-react";
+import {Checkbox} from "@/components/ui/checkbox";
 
 // Form validation schema
 const formSchema = z.object({
@@ -67,6 +68,7 @@ const formSchema = z.object({
   views: z.number().default(0),
   uploadedBy: z.string().default("Admin"),
   tags: z.string(),
+  isPopular: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -75,7 +77,7 @@ const AdminPage = () => {
   const [_, navigate] = useLocation();
   const { toast } = useToast();
   const isAdmin = checkIfAdmin();
-  
+
   // Redirect if not admin
   if (!isAdmin) {
     navigate("/");
@@ -110,6 +112,7 @@ const AdminPage = () => {
       views: 0,
       uploadedBy: "Admin",
       tags: "",
+      isPopular: false,
     },
   });
 
@@ -121,12 +124,12 @@ const AdminPage = () => {
         ...values,
         tags: values.tags.split(',').map(tag => tag.trim()),
       };
-      
+
       const headers = {
         ...getUserHeaders(),
         "Content-Type": "application/json",
       };
-      
+
       return await apiRequest("/api/videos", {
         method: "POST",
         headers,
@@ -156,7 +159,7 @@ const AdminPage = () => {
       const headers = {
         ...getUserHeaders(),
       };
-      
+
       return await apiRequest(`/api/videos/${videoId}`, {
         method: "DELETE",
         headers,
@@ -216,7 +219,7 @@ const AdminPage = () => {
                 <Film className="h-4 w-4 mr-2" /> Manage Videos
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="add" className="bg-neutral-900 rounded-lg p-6">
               <div className="flex items-center mb-6">
                 <VideoIcon className="h-6 w-6 mr-3 text-primary" />
@@ -272,10 +275,10 @@ const AdminPage = () => {
                               )}
                             </SelectContent>
                           </Select>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
-
                     <FormField
                       control={form.control}
                       name="isPopular"
@@ -295,11 +298,6 @@ const AdminPage = () => {
                               This video will appear in the popular section
                             </FormDescription>
                           </div>
-                        </FormItem>
-                      )}
-                    />
-                          </Select>
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -435,7 +433,7 @@ const AdminPage = () => {
                 </form>
               </Form>
             </TabsContent>
-            
+
             <TabsContent value="manage" className="bg-neutral-900 rounded-lg p-6">
               <div className="flex items-center mb-6">
                 <Film className="h-6 w-6 mr-3 text-primary" />
