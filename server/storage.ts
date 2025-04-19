@@ -73,31 +73,51 @@ export class MemStorage implements IStorage {
     // Default videos list
     const sampleVideos: InsertVideo[] = [
       {
-        title: "Introduction to Programming",
-        description: "Learn the basics of programming",
-        categoryId: 8, // Programming category
-        duration: 1200,
-        thumbnailUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
-        videoUrl: "https://example.com/video1.mp4",
-        tags: ["programming", "beginner"]
+        title: "The Lost City",
+        description: "An epic adventure in a mysterious ancient city",
+        categoryId: 2, // Movies category
+        duration: 7200,
+        thumbnailUrl: "https://images.unsplash.com/photo-1618172193763-c511deb635ca",
+        videoUrl: "https://example.com/lost-city.mp4",
+        tags: ["adventure", "action", "mystery"],
+        isPopular: true
       },
       {
-        title: "Workout Routine",
-        description: "30-minute full body workout",
-        categoryId: 7, // Fitness category
-        duration: 1800,
-        thumbnailUrl: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
-        videoUrl: "https://example.com/video2.mp4",
-        tags: ["fitness", "workout"]
+        title: "Summer Beats",
+        description: "The hottest summer music festival highlights",
+        categoryId: 3, // Music category
+        duration: 3600,
+        thumbnailUrl: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea",
+        videoUrl: "https://example.com/summer-beats.mp4",
+        tags: ["music", "festival", "summer"],
+        isPopular: true
       },
       {
-        title: "Easy Pasta Recipe",
-        description: "Learn to make delicious pasta",
+        title: "Pro Gaming Tips",
+        description: "Advanced strategies for competitive gaming",
+        categoryId: 4, // Gaming category
+        duration: 2400,
+        thumbnailUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e",
+        videoUrl: "https://example.com/gaming-tips.mp4",
+        tags: ["gaming", "esports", "tutorial"]
+      },
+      {
+        title: "Cosmic Journey",
+        description: "Explore the mysteries of the universe",
+        categoryId: 5, // Education category
+        duration: 3000,
+        thumbnailUrl: "https://images.unsplash.com/photo-1462332420958-a05d1e002413",
+        videoUrl: "https://example.com/cosmic-journey.mp4",
+        tags: ["space", "science", "education"]
+      },
+      {
+        title: "Gourmet Kitchen",
+        description: "Master chef secrets revealed",
         categoryId: 6, // Cooking category
-        duration: 900,
-        thumbnailUrl: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9",
-        videoUrl: "https://example.com/video3.mp4",
-        tags: ["cooking", "recipe"]
+        duration: 1800,
+        thumbnailUrl: "https://images.unsplash.com/photo-1556910096-6f5e72db6803",
+        videoUrl: "https://example.com/gourmet-kitchen.mp4",
+        tags: ["cooking", "chef", "gourmet"]
       }
     ];
     
