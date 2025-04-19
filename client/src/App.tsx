@@ -18,6 +18,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/video/:id" component={VideoPage} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/my-list" component={MyList} />
       <Route component={NotFound} />
     </Switch>
   );
