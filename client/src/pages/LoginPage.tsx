@@ -11,14 +11,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (username === "admin_daniwdiawdnawidwandwndwadnwi" && password === "BrokieFlix_Admin_2024!") {
-      setUsernameToStorage(username);
-      navigate("/admin");
-    } else {
-      setError("Invalid credentials");
-    }
+  const handleGoogleLogin = () => {
+    window.location.href = '/auth/google';
   };
 
   return (
@@ -27,30 +21,13 @@ const LoginPage = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white">Admin Login</h2>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <Input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full"
-            />
-          </div>
-          <div>
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full"
-            />
-          </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
-        </form>
+        <Button 
+          onClick={handleGoogleLogin} 
+          className="w-full flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-100"
+        >
+          <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+          Sign in with Google
+        </Button>
       </div>
     </div>
   );

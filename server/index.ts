@@ -1,10 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import passport from './auth';
+import session from 'express-session';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(session({ secret: 'your-session-secret', resave: false, saveUninitialized: true })); // Add session middleware
+app.use(passport.initialize()); // Add passport initialization middleware
+app.use(passport.session()); // Add passport session middleware
+
 
 app.use((req, res, next) => {
   const start = Date.now();
