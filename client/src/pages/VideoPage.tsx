@@ -101,13 +101,7 @@ const VideoPage = () => {
                       Play
                     </Button>
                     
-                    <Button 
-                      variant="outline"
-                      className="bg-neutral-800 border-neutral-600 hover:bg-neutral-700 rounded-md"
-                    >
-                      <Plus size={18} className="mr-2" />
-                      My List
-                    </Button>
+                    
                   </div>
                   
                   <div className="bg-neutral-900/50 p-4 rounded-md">

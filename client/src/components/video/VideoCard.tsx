@@ -4,7 +4,6 @@ import { type Video } from "@shared/schema";
 import { formatDuration } from "@/lib/video";
 import { Play, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { addToMyList, removeFromMyList, isInMyList } from "@/lib/auth";
 
 interface VideoCardProps {
   video: Video;
@@ -13,11 +12,6 @@ interface VideoCardProps {
 const VideoCard = ({ video }: VideoCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [_, navigate] = useLocation();
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    setSaved(isInMyList(video.id));
-  }, [video.id]);
 
   const handlePlayClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -26,16 +20,6 @@ const VideoCard = ({ video }: VideoCardProps) => {
 
   const handleCardClick = () => {
     navigate(`/video/${video.id}`);
-  };
-
-  const handleSave = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (saved) {
-      removeFromMyList(video.id);
-    } else {
-      addToMyList(video.id);
-    }
-    setSaved(!saved);
   };
 
   return (
@@ -84,14 +68,6 @@ const VideoCard = ({ video }: VideoCardProps) => {
               <span className="text-xs text-white bg-neutral-900/60 px-1 py-0.5 rounded">
                 {formatDuration(video.duration)}
               </span>
-              <button
-                onClick={handleSave}
-                className={`ml-2 mt-2 px-3 py-1 rounded text-sm ${
-                  saved ? 'bg-red-500' : 'bg-blue-500'
-                }`}
-              >
-                {saved ? 'Remove from List' : 'Add to List'}
-              </button>
             </div>
           )}
         </div>
